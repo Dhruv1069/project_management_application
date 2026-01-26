@@ -17,10 +17,13 @@ jobs:
           cache: 'npm'
 
       - name: Install Dependencies
+        working-directory: ./my-app # Tell GitHub to go into the subfolder
         run: npm install
 
       - name: Run Linting
-        run: npm run lint # Checks for code style errors
+        working-directory: ./my-app
+        run: npm run lint
 
       - name: Run Build
-        run: npm run build # Ensures React/Node code compiles
+        working-directory: ./my-app
+        run: npm run build
