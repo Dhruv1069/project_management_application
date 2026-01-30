@@ -1,10 +1,12 @@
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { TestComponent } from "@/feature/test";
 import Image from "next/image";
 
 export default function Home() {
   return (
     <div className="flex ">
+      <Input/>
       <Button>
         primary
       </Button>
@@ -22,6 +24,9 @@ export default function Home() {
       </Button>
       <Button variant="outline">
         outline
+      </Button>
+      <Button variant="teritary">
+        teritary
       </Button>
     </div>
   );
