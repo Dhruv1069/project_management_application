@@ -28,6 +28,9 @@ export default function Home() {
       <Button variant="teritary">
         teritary
       </Button>
+      <Button variant="destructive">
+        test
+      </Button>
     </div>
   );
 }
