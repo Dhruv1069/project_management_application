@@ -1,36 +1,32 @@
+"use client"
+
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { TestComponent } from "@/feature/test";
-import Image from "next/image";
+// import { Button } from "@/components/ui/button";
+// import { Input } from "@/components/ui/input";
+import { useCurrent } from "@/feature/auth/api/use-current";
+import { useLogout } from "@/feature/auth/api/use-logout";
+import { Butterfly_Kids } from "next/font/google";
+// import { TestComponent } from "@/feature/test";
+// import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Home() {
+  const router = useRouter();
+  const { data, isLoading } = useCurrent();
+  const {mutate} = useLogout();
+
+  useEffect(()=> {
+    if(!data && !isLoading){
+      router.push("/sign-in")
+    }
+  }, [data]);
   return (
-    <div className="flex ">
-      <Input/>
-      <Button>
-        primary
-      </Button>
-      <Button variant="secondary">
-        secondary
-      </Button>
-      <Button variant="destructive">
-        destructive
-      </Button>
-      <Button variant="ghost">
-        ghost
-      </Button>
-      <Button variant="link">
-        link
-      </Button>
-      <Button variant="outline">
-        outline
-      </Button>
-      <Button variant="teritary">
-        teritary
-      </Button>
-      <Button variant="destructive">
-        test
-      </Button>
-    </div>
+   <div>
+    only visible to admin
+    <Button onClick = {()=>mutate()}>
+      Logout
+    </Button>
+   </div>
   );
 }
