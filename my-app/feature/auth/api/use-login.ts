@@ -1,7 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
 import { InferRequestType, InferResponseType } from "hono";
-
+import { QueryErrorResetBoundary, useQueryClient } from "@tanstack/react-query";
 import { client } from "@/lib/rpc";
+import { useRouter } from "next/navigation";
 
 //being less specific and more explicit by remove json
 
@@ -9,6 +10,9 @@ type ResponseType = InferResponseType<typeof client.api.auth.login["$post"]>;
 type RequestType = InferRequestType<typeof client.api.auth.login["$post"]>;
 
 export const useLogin = () => {
+    const router = useRouter();
+    const queryClient = useQueryClient();
+
     const mutation = useMutation<
         ResponseType,
         Error,
@@ -18,6 +22,10 @@ export const useLogin = () => {
             const response = await client.api.auth.login["$post"]({ json });
             return await response.json();
         },
+        onSuccess: ()=>{
+            router.refresh();
+            queryClient.invalidateQueries({queryKey: ["current"]});
+        }
     });
 
     return mutation;

@@ -1,0 +1,1 @@
+export const AUTH_COOKIE = "project_management_app"
