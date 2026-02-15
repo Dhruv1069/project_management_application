@@ -15,4 +15,6 @@ const routes = app
 export const GET = handle(app); 
 export const POST = handle(app); //native next.js app api routes requires explicit export of GET POST PUT DELETE (Anything about REST API operations)
 export const PATCH = handle(app);
+export const DELETE = handle(app);
+
 export type AppType = typeof routes; //holds the entire api 
