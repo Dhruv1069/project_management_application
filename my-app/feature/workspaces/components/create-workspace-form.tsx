@@ -14,6 +14,8 @@ import React, { useRef } from "react";
 import Image from "next/image";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { ImageIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 
 interface createWorkspaceFormProps {
@@ -21,6 +23,7 @@ interface createWorkspaceFormProps {
 };
 
 export const CreateWorkspaceForm = ({onCancel} : createWorkspaceFormProps) => {
+    const router = useRouter();
     const { mutate, isPending } = useCreateWorkspace();
 
     const inputRef = useRef<HTMLInputElement>(null);
@@ -39,9 +42,10 @@ export const CreateWorkspaceForm = ({onCancel} : createWorkspaceFormProps) => {
         };
 
         mutate({ form: finalValues }, {
-            onSuccess: () => {
+            onSuccess: ({data}) => {
                 form.reset();
-                onCancel?.();
+                // onCancel?.();
+                router.push(`/workspaces/${data.$id}`);
             }
         });
     };
@@ -115,7 +119,24 @@ export const CreateWorkspaceForm = ({onCancel} : createWorkspaceFormProps) => {
                                                     disabled={isPending}
                                                     onChange={handleImageChange}
                                                 />
+                                                {field.value? (
                                                 <Button 
+                                                    type="button" 
+                                                    disabled={isPending} 
+                                                    variant="destructive" 
+                                                    size="xs" 
+                                                    className="w-fit mt-2 bg-[#DDE7FF] text-[#2563EB] hover:bg-[#DDE7FF]/80 shadow-none font-semibold" 
+                                                    onClick={() => {
+                                                        field.onChange(null);
+                                                        if(inputRef.current){
+                                                            inputRef.current.value = "";
+                                                        }
+                                                    }}
+                                                >
+                                                    Remove Image
+                                                </Button>
+                                                ): (
+                                                    <Button 
                                                     type="button" 
                                                     disabled={isPending} 
                                                     variant="teritary" 
@@ -125,6 +146,7 @@ export const CreateWorkspaceForm = ({onCancel} : createWorkspaceFormProps) => {
                                                 >
                                                     Upload Image
                                                 </Button>
+                                                )}
                                             </div>
                                         </div>
                                     </div>
@@ -141,6 +163,7 @@ export const CreateWorkspaceForm = ({onCancel} : createWorkspaceFormProps) => {
                                 variant="secondary" 
                                 onClick={onCancel}
                                 disabled={isPending} 
+                                className={cn(!onCancel && "invisible")}
                             >
                                 Cancel
                             </Button>
