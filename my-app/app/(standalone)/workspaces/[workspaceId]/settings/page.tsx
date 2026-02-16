@@ -1,5 +1,5 @@
-import { getCurrent } from "@/feature/auth/actions";
-import { getworkspace, getworkspaces } from "@/feature/workspaces/actions";
+import { getCurrent } from "@/feature/auth/queries";
+import { getWorkspace, getWorkspaces } from "@/feature/workspaces/queries";
 import { EditWorkspaceForm } from "@/feature/workspaces/components/edit-workspace-form";
 import { redirect } from "next/navigation";
 
@@ -18,7 +18,7 @@ const WorkspaceIdSettingsPage = async ({
     
     if (!user) redirect("/sign-in");
 
-    const initialValues = await getworkspace({workspaceId})
+    const initialValues = await getWorkspace({workspaceId})
 
     if(!initialValues){
         redirect(`/workspaces/${workspaceId}`)
